@@ -121,6 +121,9 @@ struct HardDifficultyStrategy: DifficultyStrategy {
             return board.evaluate()
         }
         
+        var alpha = alpha
+        var beta = beta
+        
         if maximizingPlayer {
             var maxEval = Int.min
             
@@ -131,8 +134,9 @@ struct HardDifficultyStrategy: DifficultyStrategy {
                 let eval = minimax(board: newBoard, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: false)
                 
                 maxEval = max(maxEval, eval)
+                alpha = max(alpha, eval)
                 
-                if max(alpha, eval) <= alpha {
+                if beta <= alpha {
                     break
                 }
             }
@@ -148,8 +152,9 @@ struct HardDifficultyStrategy: DifficultyStrategy {
                 let eval = minimax(board: newBoard, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: true)
                 
                 minEval = min(minEval, eval)
+                beta = min(beta, eval)
                 
-                if min(beta, eval) <= alpha {
+                if beta <= alpha {
                     break
                 }
             }
